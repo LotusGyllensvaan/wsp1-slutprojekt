@@ -22,16 +22,16 @@ class Seeder
 
   def self.populate_tables
     
-    db.execute('INSERT INTO tasks (article, description, category) VALUES ("Fishing Rod", "High quality rod used for the most damndest of fish.")')
-    db.execute('INSERT INTO tasks (article, description, category) VALUES ("Tackle Box", "Watch how I tackle box", 1)')
-    db.execute('INSERT INTO tasks (article, description, category) VALUES ("Fishing Line", "Withstand a damn behemoth", 1)')
-    db.execute('INSERT INTO tasks (article, description, category) VALUES ("Grubs", "German Assasinations", 0)')
+    db.execute('INSERT INTO equipment (article, description, category) VALUES ("Fishing Rod", "High quality rod used for the most damndest of fish.", "Rods")')
+    db.execute('INSERT INTO equipment (article, description, category) VALUES ("Tackle Box", "Watch how I tackle box", "Storage")')
+    db.execute('INSERT INTO equipment (article, description, category) VALUES ("Fishing Line", "Withstand a damn behemoth", "Line")')
+    db.execute('INSERT INTO equipment (article, description, category) VALUES ("Grubs", "German Assasinations", "Bait")')
   end
 
   private
   def self.db
     return @db if @db
-    @db = SQLite3::Database.new('db/tasks.sqlite')
+    @db = SQLite3::Database.new('db/equipment.sqlite')
     @db.results_as_hash = true
     @db
   end
