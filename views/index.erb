@@ -1,15 +1,4 @@
-<body>
-  <header>
-    <nav>
-      <div class="auth-links">
-        <a href="/login" class="auth-link">Login</a>
-        <a href="/signup" class="auth-link">Sign Up</a>
-      </div>
-      Welcome to Rods and Cods - Freshwater Fishing Supplies
-    </nav>
-  </header>
-
-  <h1>Tackle that Box</h1>
+ <h1>Tackle that Box</h1>
 
   <div class="product-grid">
     <% @products.each do |prod| %>
@@ -22,8 +11,3 @@
     <% end %>
   </div>
 
-  <footer>
-    &copy; <%= Time.now.year %> Rods And Cods. Happy Fishing!
-  </footer>
-</body>
-</html>
