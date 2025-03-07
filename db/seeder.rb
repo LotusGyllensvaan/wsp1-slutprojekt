@@ -25,7 +25,8 @@ class Seeder
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT NOT NULL,
                 username TEXT NOT NULL,
-                password TEXT NOT NULL)')
+                password TEXT NOT NULL,
+                admin BOOLEAN NOT NULL)')
     
   end
 
@@ -36,7 +37,7 @@ class Seeder
     db.execute('INSERT INTO equipment (article, description, category) VALUES ("Grubs", "German Assasinations", "Bait")')
 
     password_hashed = BCrypt::Password.create("123")
-    db.execute('INSERT INTO users (email, username, password) VALUES (?, ?, ?)', ["lotus.gyllensvaan@gmail.com", "admin", password_hashed])
+    db.execute('INSERT INTO users (email, username, password, admin) VALUES (?, ?, ?, ?)', ["lotus.gyllensvaan@gmail.com", "admin", password_hashed, "1"])
   end
 
   private

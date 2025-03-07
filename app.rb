@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
 class App < Sinatra::Base
+
+  def user
+    db.execute('SELECT * FROM users WHERE id = ?', session[:user_id].to_i).first
+  end
+
   get '/' do
     redirect('/products')
     if session[:user_id]
       erb(:"admin/index")
     else
-      erb :index
+      erb :"products/index"
     end
   end
 
@@ -26,12 +31,11 @@ class App < Sinatra::Base
   end
 
   get '/admin' do
-    puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa"
-    p @session_username = db.execute('SELECT username FROM users WHERE id = ?', session[:user_id].to_i).first
-    puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa"
-    if session[:user_id]
+    @user = user
+
+    if @user['admin'].to_i == 1
       @products = db.execute('SELECT * FROM equipment')
-      erb(:"admin/index")
+      erb :"admin/index"
     else
       p '/admin : Access denied.'
       status 401
@@ -44,8 +48,9 @@ class App < Sinatra::Base
   end
 
   get '/products' do
+    @user = user
     @products = db.execute('SELECT * FROM equipment')
-    erb(:index)
+    erb :"products/index"
   end
 
   post '/products' do
@@ -54,8 +59,14 @@ class App < Sinatra::Base
                  params['article'],
                  params['description'],
                  params['category']
-               ])
+               ]
+    )
     redirect('/admin')
+  end
+
+  get '/products/:id' do |id|
+    @product = db.execute('SELECT * FROM equipment WHERE id = ?', id).first
+    erb :"products/show"
   end
 
   post '/products/:id/delete' do |id|
@@ -65,7 +76,7 @@ class App < Sinatra::Base
 
   get '/products/:id/edit' do |id|
     @product = db.execute('SELECT * FROM equipment WHERE Id = ?', id).first
-    erb(:"admin/change")
+    erb(:"products/change")
   end
 
   post '/products/:id/update' do |id|
@@ -114,27 +125,26 @@ class App < Sinatra::Base
     # Check if the plain password matches the hashed password from db
     if bcrypt_db_password == request_plain_password
       session[:user_id] = db_id
-      redirect '/admin'
+      redirect (user['admin'].to_i == 1 ? '/admin' : '/products')
     else
       status 401
       redirect '/unauthorized'
     end
   end
 
-
-
   get '/signup' do
     erb(:signup)
   end
 
   post '/signup' do
-    params[:username]
+    @signing_in = true
     password_hashed = BCrypt::Password.create(params[:password])
-    db.execute('INSERT INTO users (email, username, password) VALUES(?,?,?)',
+    db.execute('INSERT INTO users (email, username, password, admin) VALUES(?,?,?,?)',
                [
                  params['email'],
                  params['username'],
-                 password_hashed
+                 password_hashed,
+                 0
                ])
     redirect '/products'
   end

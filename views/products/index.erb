@@ -4,11 +4,8 @@
     <% @products.each do |prod| %>
       <div class="product-card">
         <img src="<%= prod['image_url'] || '/default-image.jpg' %>" alt="<%= prod['article'] %>" class="product-image">
-        <h3><%= prod['article'] %></h3>
-        <h4><%= prod['description'] %></h4>
-        <h6><%= prod['category'] %></h6>
+        <a href="/products/<%=prod['id']%>"><%=prod['article']%></a>
       </div>
     <% end %>
-    
   </div>
 

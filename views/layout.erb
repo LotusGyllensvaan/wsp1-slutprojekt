@@ -3,21 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= @title || "Rods and Cods" %></title>
+  <title><%="Rods and Cods" %></title>
   <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
   <header>
     <nav>
-      <% if session[:user_id] %>
-        <h1> <% @session_username %> </h1>
+      <% if @user %>
+        <p>Welcome, <%=@user['username']%>!</p>
+
+      <% elsif @signing_in? %>
+        <div class="auth-links">
+          <a href="/login" class="auth-link">Login</a>
+        </div>
+
       <% else %>
         <div class="auth-links">
-        <a href="/login" class="auth-link">Login</a>
-        <a href="/signup" class="auth-link">Sign Up</a>
+          <a href="/login" class="auth-link">Login</a>
+          <a href="/signup" class="auth-link">Sign Up</a>
         </div>
       <% end %>
-
+      
       Welcome to Rods and Cods - Freshwater Fishing Supplies
     </nav>
   </header>
