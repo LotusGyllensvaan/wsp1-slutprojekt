@@ -1,14 +1,15 @@
 <div class="login-container">
    <h2>Sign Up to Rods and Cods</h2>
-   <form action="/signup" method="POST" class="login-form">
+   <form onsubmit="return validateForm()" name="signupForm" action="/signup" method="POST" class="login-form">
 
       <div class="form-group">
          <label for="username">Username:</label>
          <input type="text" name="username" id="username" required>
+
       </div>
 
       <div class="form-group">
-         <label for="email">E-Mail:</label>
+         <label for="email">Email:</label>
          <input type="text" name="email" id="email" required>
       </div>
 
@@ -20,3 +21,23 @@
       <button type="submit">Sign Up</button>
    </form>
 </div>
+
+<script>
+  function validateForm() {
+    let username = document.forms["signupForm"]["username"].value;
+    let username_taken = <%= session[:username_taken] ? 'true' : 'false' %>;
+
+    if (username_taken) {
+      alert("Username is taken");
+      return false;
+    } else {
+      alert("Username is available");
+      // Proceed with further validation or form submission
+    }
+
+    if (username == "admin") {
+      alert("The username 'admin' is reserved and cannot be used.");
+      return false;
+    }
+  }
+</script>

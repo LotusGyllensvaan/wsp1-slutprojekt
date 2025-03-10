@@ -34,7 +34,7 @@ class App < Sinatra::Base
     @user = user
 
     if @user['admin'].to_i == 1
-      @products = db.execute('SELECT * FROM equipment')
+      @products = db.execute('SELECT * FROM products')
       erb :"admin/index"
     else
       p '/admin : Access denied.'
@@ -49,14 +49,15 @@ class App < Sinatra::Base
 
   get '/products' do
     @user = user
-    @products = db.execute('SELECT * FROM equipment')
+    @products = db.execute('SELECT * FROM products')
     erb :"products/index"
   end
 
   post '/products' do
-    db.execute('INSERT INTO equipment (article, description, category) VALUES(?,?,?)',
+    db.execute('INSERT INTO products (article, value, description, category) VALUES(?,?,?,?)',
                [
                  params['article'],
+                 params['value'],
                  params['description'],
                  params['category']
                ]
@@ -65,23 +66,23 @@ class App < Sinatra::Base
   end
 
   get '/products/:id' do |id|
-    @product = db.execute('SELECT * FROM equipment WHERE id = ?', id).first
+    @product = db.execute('SELECT * FROM products WHERE id = ?', id).first
     erb :"products/show"
   end
 
   post '/products/:id/delete' do |id|
-    db.execute('DELETE FROM equipment WHERE Id = ?', id)
+    db.execute('DELETE FROM products WHERE Id = ?', id)
     redirect '/admin'
   end
 
   get '/products/:id/edit' do |id|
-    @product = db.execute('SELECT * FROM equipment WHERE Id = ?', id).first
+    @product = db.execute('SELECT * FROM products WHERE Id = ?', id).first
     erb(:"products/change")
   end
 
   post '/products/:id/update' do |id|
     db.execute("
-      UPDATE equipment
+      UPDATE products
       SET
           article = ?,
           description = ?,
@@ -99,6 +100,7 @@ class App < Sinatra::Base
   end
 
   get '/login' do
+    @logging_in = true
     erb(:login)
   end
 
@@ -133,19 +135,33 @@ class App < Sinatra::Base
   end
 
   get '/signup' do
-    erb(:signup)
+    p session[:email_taken] ||= false
+    p session[:username_taken] ||= false
+    @signing_in = true
+    erb :signup
   end
 
   post '/signup' do
-    @signing_in = true
+    session[:email_taken] = false
+    session[:username_taken] = false
+
     password_hashed = BCrypt::Password.create(params[:password])
-    db.execute('INSERT INTO users (email, username, password, admin) VALUES(?,?,?,?)',
-               [
-                 params['email'],
-                 params['username'],
-                 password_hashed,
-                 0
-               ])
+    requested_email = params['email']
+    requested_username = params['username']
+
+    requested_credentials = [requested_email, requested_username]
+    new_user = [requested_email, requested_username, password_hashed, 0]
+
+    existing = db.execute('SELECT email, username FROM users WHERE email = ? OR username = ?', requested_credentials).first
+    if existing
+      session[:email_taken] = true if existing['email']
+      session[:username_taken] = true if existing['username']
+      redirect '/signup'
+    else
+      db.execute('INSERT INTO users (email, username, password, admin) VALUES(?,?,?,?)', new_user)
+      session[:email_taken] = false
+      session[:username_taken] = false
+    end
     redirect '/products'
   end
 end

@@ -296,3 +296,12 @@ button:hover {
   background: #355e3b;
   transform: translateY(-2px);
 }
+
+/* Optional: Custom styles for the checkout button */
+.auth-link.checkout {
+  background-color: #ff6347; /* Tomato color for emphasis */
+}
+
+.auth-link.checkout:hover {
+  background-color: #cc4c37; /* Darker shade for hover */
+}

@@ -7,26 +7,40 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <% if @user %>
+<header>
+  <nav>
+    <% if @user %>
+      <div class="auth-links">
+        <a href="/products" class="auth-link">Home</a>
+        <a href="/checkout" class="auth-link checkout">Checkout</a>
         <p>Welcome, <%=@user['username']%>!</p>
+      </div>
 
-      <% elsif @signing_in? %>
-        <div class="auth-links">
-          <a href="/login" class="auth-link">Login</a>
-        </div>
+    <% elsif @signing_in %>
+      <div class="auth-links">
+        <p>Already have an account?</p>
+        <a href="/products" class="auth-link">Home</a>
+        <a href="/login" class="auth-link">Login</a>
+        <% @signing_in=false %>
+      </div>
 
-      <% else %>
-        <div class="auth-links">
-          <a href="/login" class="auth-link">Login</a>
-          <a href="/signup" class="auth-link">Sign Up</a>
-        </div>
-      <% end %>
-      
-      Welcome to Rods and Cods - Freshwater Fishing Supplies
-    </nav>
-  </header>
+    <% elsif @logging_in %>
+      <div class="auth-links">
+        <p>Don't have an account?</p>
+        <a href="/products" class="auth-link">Home</a>
+        <a href="/signup" class="auth-link">Sign Up</a>
+      </div>
+        <% @logging_in=false %>
+    <% else %>
+      <div class="auth-links">
+        <a href="/login" class="auth-link">Login</a>
+        <a href="/signup" class="auth-link">Sign Up</a>
+        <a href="/checkout" class="auth-link">Checkout</a>
+      </div>
+      <p>Welcome to Rods and Cods - Freshwater Fishing Supplies</p>
+    <% end %>
+  </nav>
+</header>
 
   <main>
     <%= yield %> <!-- This is where your view content will be rendered -->

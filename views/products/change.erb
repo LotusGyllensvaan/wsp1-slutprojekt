@@ -1,5 +1,6 @@
 <form action="/products/<%= @product['id'] %>/update" method="post">
    <label>Article <input type="text" name="article" value="<%=@product['article']%>"></label>
+   <label>Value <input type="text" name="value" value="<%=@product['value']%>"></label>
    <label>Description <input type="text" name="description" value="<%=@product['description']%>"></label>
    <label>Category <select name="category" value="<%=@product['category']%>">
         <option value="rods">Rods</option>

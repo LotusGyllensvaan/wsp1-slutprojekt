@@ -10,14 +10,15 @@ class Seeder
   end
 
   def self.drop_tables
-    db.execute('DROP TABLE IF EXISTS equipment')
+    db.execute('DROP TABLE IF EXISTS products')
     db.execute('DROP TABLE IF EXISTS users')
   end
 
   def self.create_tables
-    db.execute('CREATE TABLE equipment (
+    db.execute('CREATE TABLE products (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 article TEXT NOT NULL,
+                value FLOAT NOT NULL,
                 description TEXT NOT NULL,
                 category TEXT NOT NULL)')
 
@@ -31,10 +32,10 @@ class Seeder
   end
 
   def self.populate_tables
-    db.execute('INSERT INTO equipment (article, description, category) VALUES ("Fishing Rod", "High quality rod used for the most damndest of fish.", "Rods")')
-    db.execute('INSERT INTO equipment (article, description, category) VALUES ("Tackle Box", "Watch how I tackle box", "Storage")')
-    db.execute('INSERT INTO equipment (article, description, category) VALUES ("Fishing Line", "Withstand a damn behemoth", "Line")')
-    db.execute('INSERT INTO equipment (article, description, category) VALUES ("Grubs", "German Assasinations", "Bait")')
+    db.execute('INSERT INTO products (article, value, description, category) VALUES ("Fishing Rod", 100, "High quality rod used for the most damndest of fish.", "Rods")')
+    db.execute('INSERT INTO products (article, value, description, category) VALUES ("Tackle Box", 200, "Watch how I tackle box", "Storage")')
+    db.execute('INSERT INTO products (article, value, description, category) VALUES ("Fishing Line", 300, "Withstand a damn behemoth", "Line")')
+    db.execute('INSERT INTO products (article, value, description, category) VALUES ("Grubs", 500, "German Assasinations", "Bait")')
 
     password_hashed = BCrypt::Password.create("123")
     db.execute('INSERT INTO users (email, username, password, admin) VALUES (?, ?, ?, ?)', ["lotus.gyllensvaan@gmail.com", "admin", password_hashed, "1"])

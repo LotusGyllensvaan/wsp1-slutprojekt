@@ -5,6 +5,7 @@
       <div class="product-card">
         <img src="<%= prod['image_url'] || '/default-image.jpg' %>" alt="<%= prod['article'] %>" class="product-image">
         <a href="/products/<%=prod['id']%>"><%=prod['article']%></a>
+        <h2><%= prod['value'] %></h2>
       </div>
     <% end %>
   </div>

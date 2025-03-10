@@ -2,6 +2,7 @@
 
 <form action="/products" method="post">
     <label>Article <input type="text" name="article"></label>
+    <label>Value <input type="text" name="value"></label>
     <label>Description <input type="text" name="description"></label>
     <label>Category 
     <select name="category">
@@ -19,6 +20,7 @@
         <div class="product-card">
             <img src="/default-image.jpg" alt="<%= prod['article'] %>" class="product-image">
             <h3><%= prod['article'] %></h3>
+            <h2><%= prod['value'] %></h2>
 
             <form action="/products/<%=prod["id"]%>/delete" method="post">
                 <input type="submit" value="Delete Product" style="color: red;">
