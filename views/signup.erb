@@ -25,10 +25,11 @@
 <script>
   function validateForm() {
     let username = document.forms["signupForm"]["username"].value;
+    let text = ""
     let username_taken = <%= session[:username_taken] ? 'true' : 'false' %>;
 
     if (username_taken) {
-      alert("Username is taken");
+      text = "Username is already taken"
       return false;
     } else {
       alert("Username is available");
