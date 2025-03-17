@@ -164,4 +164,8 @@ class App < Sinatra::Base
     end
     redirect '/products'
   end
+
+  get '/checkout' do
+    erb :"checkout"
+  end
 end

@@ -15,20 +15,75 @@ class Seeder
   end
 
   def self.create_tables
-    db.execute('CREATE TABLE products (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                article TEXT NOT NULL,
-                value FLOAT NOT NULL,
-                description TEXT NOT NULL,
-                category TEXT NOT NULL)')
 
-    db.execute('CREATE TABLE users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                email TEXT NOT NULL,
-                username TEXT NOT NULL,
-                password TEXT NOT NULL,
-                admin BOOLEAN NOT NULL)')
+    #--Static Data--#
+    db.execute('CREATE TABLE product (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      desc TEXT NOT NULL,
+      SKU TEXT NOT NULL UNIQUE,
+      category TEXT NOT NULL,
+      price REAL NOT NULL,
+      discount_id INTEGER DEFAULT 0,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      modified_at DATETIME,
+      FOREIGN KEY (discount_id) REFERENCES discount (id) ON DELETE SET NULL ON UPDATE SET NULL
+      )')
+
+    db.execute('CREATE TABLE discount (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      desc TEXT NOT NULL,
+      discount_percent REAL NOT NULL,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      modified_at DATETIME
+    )')
     
+    db.execute('CREATE TABLE users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT NOT NULL,
+      username TEXT NOT NULL,
+      password TEXT NOT NULL,
+      admin BOOLEAN NOT NULL,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      modified_at DATETIME
+    )')
+
+    #--Session Data--#
+    
+    db.execute('CREATE TABLE shopping_session (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT NOT NULL,
+      username TEXT NOT NULL,
+      password TEXT NOT NULL,
+      admin BOOLEAN NOT NULL)')    
+
+    #--Processed Data--#
+    db.execute('CREATE TABLE order_details (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      total FLOAT, 
+      created_at TIMESTAMP,
+      modified_at TIMESTAMP
+    )')
+
+    db.execute('CREATE TABLE order_items (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      order_id INTEGER,
+      product_id,
+      created_at TIMESTAMP,
+      modified_at TIMESTAMP
+    )')
+
+    db.execute('CREATE TABLE payment_details (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      order_id INTEGER,
+      amount INTEGER, 
+      provider TEXT,
+      status TEXT,
+      created_at TIMESTAMP,
+      modified_at TIMESTAMP
+    )')    
   end
 
   def self.populate_tables
