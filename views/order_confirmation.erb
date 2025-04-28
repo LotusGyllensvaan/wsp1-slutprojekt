@@ -1,0 +1,18 @@
+<h1>Order Confirmation</h1>
+
+<p><strong>Order ID:</strong> <%= order['id'] %></p>
+<p><strong>Total:</strong> $<%= sprintf('%.2f', order['total']) %></p>
+<p><strong>Payment Status:</strong> <%= payment['status'] %></p>
+<p><strong>Payment Provider:</strong> <%= payment['provider'] %></p>
+
+<h2>Items in Your Order:</h2>
+<ul>
+  <% items.each do |item| %>
+    <li>
+      <strong><%= item['name'] %></strong> - $<%= sprintf('%.2f', item['price']) %> 
+      (Added on <%= item['created_at'] %>)
+    </li>
+  <% end %>
+</ul>
+
+<a href="/">Return to Home</a>

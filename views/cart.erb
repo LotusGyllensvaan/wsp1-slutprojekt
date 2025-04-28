@@ -1,0 +1,16 @@
+<h1>Cart</h1>
+
+<ul>
+    <% @cart_products.each do |item| %>
+        <li>
+            <h2><%= item['name'] %></h2>
+            <h3>$<%= item['price'].to_i * item['quantity'].to_i %></h3>
+            <h4>Amount: <%= item['quantity'] %></h4>
+        </li>
+    <% end %>
+</ul>
+
+<form action="/checkout" method="post">
+    <input type="submit" value="Checkout">
+</form>
+

@@ -3,9 +3,13 @@
   <div class="product-grid">
     <% @products.each do |prod| %>
       <div class="product-card">
-        <img src="<%= prod['image_url'] || '/default-image.jpg' %>" alt="<%= prod['article'] %>" class="product-image">
-        <a href="/products/<%=prod['id']%>"><%=prod['article']%></a>
-        <h2><%= prod['value'] %></h2>
+        <img src="<%= prod['image_url'] || '/img/default-image.jpg' %>" alt="<%= prod['name'] %>" class="product-image">
+        <a href="/products/<%=prod['id']%>"><%=prod['name']%></a>
+        <h2>$<%= prod['price'] %></h2>
+        <form action="/cart/<%=prod['id']%>" method="post">
+          <input type="number" name="quantity">
+          <input type="submit" value="Add To cart">
+        </form>
       </div>
     <% end %>
   </div>

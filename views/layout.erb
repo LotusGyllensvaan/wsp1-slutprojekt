@@ -12,7 +12,10 @@
     <% if @user %>
       <div class="auth-links">
         <a href="/products" class="auth-link">Home</a>
-        <a href="/checkout" class="auth-link checkout">Checkout</a>
+        <form action="/logout" method="POST" class="auth-link">
+          <button type="submit">Logout</button>
+        </form>
+        <a href="/cart" class="auth-link checkout">Cart</a>
         <p>Welcome, <%=@user['username']%>!</p>
       </div>
 
@@ -35,15 +38,15 @@
       <div class="auth-links">
         <a href="/login" class="auth-link">Login</a>
         <a href="/signup" class="auth-link">Sign Up</a>
-        <a href="/checkout" class="auth-link">Checkout</a>
+        <a href="/cart" class="auth-link checkout">Cart</a>
       </div>
-      <p>Welcome to Rods and Cods - Freshwater Fishing Supplies</p>
+      <p>Welcome to <a href="/" class="auth-link">Rods and Cods</a> - Freshwater Fishing Supplies</p>
     <% end %>
   </nav>
 </header>
 
   <main>
-    <%= yield %> <!-- This is where your view content will be rendered -->
+    <%= yield %>
   </main>
 
   <footer>
