@@ -1,0 +1,25 @@
+ <h1>Discount Page</h1>
+
+ <form action="/discount" method="post" enctype="multipart/form-data">
+  <label>Name <input type="text" name="name"></label>
+  <label>Percent <input type="text" name="discount_percent"></label>
+  <label>Discounted Products (ex. "prod1, prod2") <input type="text" name="discounted_products"></label>
+  <label>Description <input type="text" name="description"></label>
+  <label>Start Date <input type="datetime-local" name="start_date" step="1"></label>
+  <label>End Date <input type="datetime-local" name="end_date" step="1"></label>
+  <input type="submit" value="Add new discount">
+</form>
+
+  <div class="product-grid">
+    <% @discounts.each do |disc| %>
+      <div class="product-card">
+        <a href="/discount/<%=disc['id']%>"><%=disc['name']%></a>
+        <h3><%= disc['description'] %></h3>
+        <h2><%= disc['discount_percent'].to_i %>%</h2>
+
+        <form action="/discount/<%=disc["id"]%>/delete" method="post">
+          <input type="submit" value="Delete Discount">
+        </form>
+      </div>
+    <% end %>
+  </div>

@@ -1,0 +1,37 @@
+<form action="/product/<%= @product['id'] %>/update" method="post" enctype="multipart/form-data">
+  <label>Article 
+    <input type="text" name="name" value="<%= @product['name'] %>">
+  </label>
+
+  <label>Value 
+    <input type="text" name="price" value="<%= @product['price'] %>">
+  </label>
+
+  <label>Description 
+    <input type="text" name="desc" value="<%= @product['description'] %>">
+  </label>
+
+  <label>SKU 
+    <input type="text" name="sku" value="<%= @product['SKU'] %>">
+  </label>
+
+  <label>Category 
+    <select name="category">
+      <option value="rods" <%= 'selected' if @product['category'] == 'rods' %>>Rods</option>
+      <option value="Storage" <%= 'selected' if @product['category'] == 'Storage' %>>Storage</option>
+      <option value="Line" <%= 'selected' if @product['category'] == 'Line' %>>Line</option>
+      <option value="Bait" <%= 'selected' if @product['category'] == 'Bait' %>>Bait</option>
+    </select>
+  </label>
+
+  <% if @product['image_url'] %>
+    <p>Current Image:</p>
+    <img src="<%= @product['image_url'] %>" alt="Product Image" style="max-width: 200px;">
+  <% end %>
+
+  <label>Change Image 
+    <input type="file" name="image" accept="image/*">
+  </label>
+
+  <input type="submit" value="Save Changes">
+</form>

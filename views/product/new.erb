@@ -1,0 +1,41 @@
+<h1>Tackle that Box</h1>
+
+<a href="/discount">Discount Page</a>
+
+<form action="/product" method="post" enctype="multipart/form-data">
+  <label>Article <input type="text" name="article"></label>
+  <label>Value <input type="number" name="value"></label>
+  <label>Description <input type="text" name="description"></label>
+  <label>SKU <input type="text" name="SKU"></label>
+  <label>Category 
+    <select name="category">
+      <option value="rods">Rods</option>
+      <option value="Storage">Storage</option>
+      <option value="Line">Line</option>
+      <option value="Bait">Bait</option>
+    </select>
+  </label>
+  <label>Image <input type="file" name="image"></label>
+  <input type="submit" value="Add new product">
+</form>
+
+<div class="product-grid">
+
+    <% @products.each do |prod| %>
+        <div class="product-card">
+            <img src="<%= prod['image_url'] || '/img/default-image.jpg' %>" alt="<%= prod['name'] %>" class="product-image">
+            <h3><%= prod['name'] %></h3>
+            <h2>$<%= prod['price'] %></h2>
+
+            <form class="delete" action="/product/<%=prod["id"]%>/delete" method="post">
+                <input type="submit" value="Delete Product" style="color: red;">
+            </form>
+
+            <form action="/product/<%=prod["id"]%>/edit" method="get">
+                <input type="submit" value="Edit Product Info" style="color: rgb(235, 200, 2);">
+            </form>
+        </div>
+    <% end %>
+    
+  </div>
+

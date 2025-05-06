@@ -1,0 +1,11 @@
+ <h1>Affected Products</h1>
+
+  <div class="product-grid">
+    <% @affected_products.each do |afprod| %>
+      <div class="product-card">
+        <a href="/product/<%=afprod['id']%>"><%=afprod['name']%></a>
+        <h2>$<%= afprod['price'] %></h2>
+      </div>
+    <% end %>
+  </div>
+

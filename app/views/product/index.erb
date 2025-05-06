@@ -1,0 +1,44 @@
+<h1 class="text-center">Tackle that Box</h1>
+
+<div class="product-grid">
+  <% @products.each do |prod| %>
+    <div class="product-card <%= 'discounted' if prod[:has_discount] %>">
+      <% if prod[:has_discount] %>
+        <div class="discount-ribbon">
+          Save <%= ((1 - prod[:total_discount])*100).to_i %>%
+        </div>
+      <% end %>
+
+      <img src="<%= prod['image_url'] || '/img/default-image.jpg' %>" alt="<%= prod['name'] %>" class="product-image">
+      <h3><a href="/product/<%=prod['id']%>"><%=prod['name']%></a></h3>
+      
+      <div class="price-display">
+        <% if prod[:has_discount] %>
+          <span class="original-price"><s>$<%= '%.2f' % prod['price'] %></s></span>
+          <span class="final-price">$<%= '%.2f' % prod[:discount_price] %></span>
+        <% else %>
+          <span class="price">$<%= '%.2f' % prod['price'] %></span>
+        <% end %>
+      </div>
+
+      <% if prod[:has_discount] && prod[:discounts].size > 1 %>
+        <div class="discount-tooltip">
+          <span class="tooltip-icon">i</span>
+          <div class="tooltip-content">
+            <p>Combined discounts:</p>
+            <ul>
+              <% prod[:discounts].each do |discount| %>
+                <li><%= discount['name'] %> (<%= discount['discount_percent'].to_i %>% off)</li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+
+      <form action="/cart/<%=prod['id']%>" method="post" class="add-to-cart">
+        <input type="number" name="quantity" min="1" value="1" class="quantity-input">
+        <input type="submit" value="Add To Cart" class="add-to-cart-btn">
+      </form>
+    </div>
+  <% end %>
+</div>
